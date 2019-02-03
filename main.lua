@@ -23,7 +23,9 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
  
     pong_text_font = love.graphics.newFont('font.ttf', 8)
-    love.graphics.setFont(pong_text_font)
+
+    score_font = love.graphics.newFont('font.ttf', 32)
+
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, 
     WINDOW_HEIGHT, {
@@ -31,6 +33,9 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    player1_score = 0
+    player2_score = 0
 end
 
 -- The below code will handle key handling in the game
@@ -62,17 +67,25 @@ function love.draw()
     -- with a specific color whenever draw function will be called
     
         --love.graphics.clear(40, 45, 52, 255)
-
+    love.graphics.setFont(pong_text_font)
     love.graphics.printf('Pong Game', 0, VIRTUAL_HEIGHT/2 - 6,
         VIRTUAL_WIDTH,
         'center'
     )
+    -- Setting the font for scores display
+    love.graphics.setFont(score_font)
+    -- Player1 Score Display
+    love.graphics.print(tostring(player1_score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
+
+    -- Player2 Score Display
+    love.graphics.print(tostring(player2_score), VIRTUAL_WIDTH / 2 + 50, VIRTUAL_HEIGHT / 3)
+
 
     -- first paddle
     love.graphics.rectangle('fill', 10, 30, 5, 20)
 
     -- second paddle
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, 5, 20)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 20, VIRTUAL_HEIGHT - 50, 5, 20)
 
     -- Ball
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2 , VIRTUAL_HEIGHT / 2 - 2, 4, 4)
