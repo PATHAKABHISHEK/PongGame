@@ -22,8 +22,10 @@ function love.load()
         resizable = false, -- window will not be resized 
         vsync = true --this is for synching of monitors
     }) ]]
+    math.randomseed(os.time())
+
     love.graphics.setDefaultFilter('nearest', 'nearest')
- 
+    
     pong_text_font = love.graphics.newFont('font.ttf', 8)
 
     score_font = love.graphics.newFont('font.ttf', 32)
@@ -42,24 +44,39 @@ function love.load()
     player1_y = 30
     player2_y = VIRTUAL_HEIGHT - 50
 
+    ball_x = VIRTUAL_WIDTH / 2 - 2
+    ball_y = VIRTUAL_HEIGHT / 2 - 2 
+
+    ball_speed_x = math.random(2) == 1 and 100 or -100
+    ball_speed_y = math.random(-50, 50)
+
+    gameState = 'start'
+
 end
 
 function love.update(dt)
     
     -- Player 1 Movements
     if love.keyboard.isDown('w') then
-        player1_y = player1_y - (PADDLE_SPEED * dt)
+        player1_y = math.max(0, player1_y - (PADDLE_SPEED * dt))
     end
     if love.keyboard.isDown('s') then
-        player1_y = player1_y + (PADDLE_SPEED * dt)
+        player1_y = math.min(VIRTUAL_HEIGHT - 20, 
+        player1_y + (PADDLE_SPEED * dt))
     end
 
     -- Player 2 Movements 
     if love.keyboard.isDown('up') then
-        player2_y = player2_y - (PADDLE_SPEED * dt)
+        player2_y = math.max(0, player2_y - (PADDLE_SPEED * dt))
     end
     if love.keyboard.isDown('down') then
-        player2_y = player2_y + (PADDLE_SPEED * dt)
+        player2_y = math.min(VIRTUAL_HEIGHT -20, 
+        player2_y + (PADDLE_SPEED * dt))
+    end
+
+    if gameState == 'play' then
+        ball_x = ball_x + ball_speed_x * dt
+        ball_y = ball_y + ball_speed_y * dt
     end
 end
 
@@ -71,6 +88,12 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit() -- This method will close the game
+    elseif key == 'return' or key == 'enter' then
+        if gameState == 'start' then
+            gameState = 'play'
+        else
+            gameState = 'start'
+        end
     end
  end
 
@@ -94,10 +117,16 @@ function love.draw()
     
         --love.graphics.clear(40, 45, 52, 255)
     love.graphics.setFont(pong_text_font)
-    love.graphics.printf('Pong Game', 0, VIRTUAL_HEIGHT/2 - 6,
-        VIRTUAL_WIDTH,
-        'center'
-    )
+    if gameState == 'start' then
+        love.graphics.printf('Start Game By Pressing Enter', 0, 20,
+            VIRTUAL_WIDTH,
+            'center'
+        )
+    else
+        love.graphics.printf('Game Started', 0, 20, VIRTUAL_WIDTH,
+        'center')
+    end
+
     -- Setting the font for scores display
     love.graphics.setFont(score_font)
     -- Player1 Score Display
@@ -114,7 +143,7 @@ function love.draw()
     love.graphics.rectangle('fill', VIRTUAL_WIDTH - 20, player2_y, 5, 20)
 
     -- Ball
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2 , VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+    love.graphics.rectangle('fill', ball_x, ball_y, 4, 4)
 
     -- end rendering ate virtual resolution 
     push:apply('end')
