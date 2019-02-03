@@ -10,6 +10,8 @@ WINDOW_WIDTH = 1280
 VIRTUAL_HEIGHT = 243
 VIRTUAL_WIDTH = 432
 
+PADDLE_SPEED = 200
+
 
 -- This is the function which will be called when game will be loaded
 -- first time
@@ -36,7 +38,31 @@ function love.load()
 
     player1_score = 0
     player2_score = 0
+
+    player1_y = 30
+    player2_y = VIRTUAL_HEIGHT - 50
+
 end
+
+function love.update(dt)
+    
+    -- Player 1 Movements
+    if love.keyboard.isDown('w') then
+        player1_y = player1_y - (PADDLE_SPEED * dt)
+    end
+    if love.keyboard.isDown('s') then
+        player1_y = player1_y + (PADDLE_SPEED * dt)
+    end
+
+    -- Player 2 Movements 
+    if love.keyboard.isDown('up') then
+        player2_y = player2_y - (PADDLE_SPEED * dt)
+    end
+    if love.keyboard.isDown('down') then
+        player2_y = player2_y + (PADDLE_SPEED * dt)
+    end
+end
+
 
 -- The below code will handle key handling in the game
 -- The love.keypressed(key) will be called each and every frame and
@@ -82,10 +108,10 @@ function love.draw()
 
 
     -- first paddle
-    love.graphics.rectangle('fill', 10, 30, 5, 20)
+    love.graphics.rectangle('fill', 10, player1_y, 5, 20)
 
     -- second paddle
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 20, VIRTUAL_HEIGHT - 50, 5, 20)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 20, player2_y, 5, 20)
 
     -- Ball
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2 , VIRTUAL_HEIGHT / 2 - 2, 4, 4)
