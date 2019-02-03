@@ -8,7 +8,7 @@ function Ball:init(x, y, width, height)
     self.height = height
 
     self.speed_x = math.random(2) == 1 and 100 or -100
-    self.speed_y = mat.random(-50, 50)
+    self.speed_y = math.random(-50, 50)
 end
 
 function Ball:update(dt)
@@ -17,8 +17,8 @@ function Ball:update(dt)
 end
 
 function Ball:reset()
-    self.x = VIRTUAL_WIDTH / 2 - self.x
-    self.y = VIRTUAL_WIDTH / 2 - self.y
+    self.x = VIRTUAL_WIDTH / 2 - 2
+    self.y = VIRTUAL_HEIGHT / 2 - 2
     self.speed_x = math.random(2) == 1 and 100 or -100
     self.speed_y = math.random(-50,50)  
 end
