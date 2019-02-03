@@ -27,8 +27,11 @@ function love.load()
         resizable = false, -- window will not be resized 
         vsync = true --this is for synching of monitors
     }) ]]
-    math.randomseed(os.time())
+    
+    love.window.setTitle('PONG GAME')
 
+    math.randomseed(os.time())
+    
     love.graphics.setDefaultFilter('nearest', 'nearest')
     
     pong_text_font = love.graphics.newFont('font.ttf', 8)
@@ -158,7 +161,7 @@ function love.draw()
     -- -- Ball
     -- love.graphics.rectangle('fill', ball_x, ball_y, 4, 4)
 
-
+    showFPS()
     player1:render()
     player2:render()
 
@@ -166,5 +169,11 @@ function love.draw()
 
     -- end rendering ate virtual resolution 
     push:apply('end')
+end
+
+function showFPS()
+    love.graphics.setFont(pong_text_font)
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.print('FPS ' ..tostring(love.timer.getFPS()), 10, 10)
 end
 
