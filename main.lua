@@ -20,6 +20,7 @@ function love.load()
         resizable = false, -- window will not be resized 
         vsync = true --this is for synching of monitors
     }) ]]
+    love.graphics.setDefaultFilter('nearest', 'nearest')
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, 
     WINDOW_HEIGHT, {
@@ -30,12 +31,25 @@ function love.load()
 end
 
 function love.draw()
-    love.graphics.printf(
+    -- start rendering at virtual resolution
+    push:apply('start')
+    -- not using WINDOW_HEIGHT and WINDOW_WEIGHT as we are using
+    -- virtual resolution rendering
+
+    --[[  love.graphics.printf(
         'Pong Game',
         0,
         WINDOW_HEIGHT/2 - 6,
         WINDOW_WIDTH,
         'center'
+    ) ]]
+
+     love.graphics.printf('Pong Game', 0, VIRTUAL_HEIGHT/2 - 6,
+        VIRTUAL_WIDTH,
+        'center'
     )
+
+    -- end rendering ate virtual resolution 
+    push:apply('end')
 end
 
