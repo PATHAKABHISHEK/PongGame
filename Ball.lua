@@ -23,6 +23,21 @@ function Ball:reset()
     self.speed_y = math.random(-50,50)  
 end
 
+function Ball:collides(paddle)
+    
+    if self.x > paddle.x + paddle.width or 
+    paddle.x > self.x + self.width then
+        return false
+    end
+
+    if self.y > paddle.y + paddle.height or 
+    paddle.y > self.y + self.height then
+        return false
+    end 
+
+    return true 
+end
+
 function Ball:render()
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
