@@ -30,6 +30,17 @@ function love.load()
     })
 end
 
+-- The below code will handle key handling in the game
+-- The love.keypressed(key) will be called each and every frame and
+-- the key which will be passed as the parameter will be of string type
+-- eg:- 'escape'
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit() -- This method will close the game
+    end
+ end
+
+
 function love.draw()
     -- start rendering at virtual resolution
     push:apply('start')
