@@ -60,12 +60,22 @@ function love.draw()
 
     -- This is the clear methods whicl will be used to color the screen
     -- with a specific color whenever draw function will be called
-    love.graphics.clear(40, 45, 52, 255)
+    
+        --love.graphics.clear(40, 45, 52, 255)
 
-     love.graphics.printf('Pong Game', 0, VIRTUAL_HEIGHT/2 - 6,
+    love.graphics.printf('Pong Game', 0, VIRTUAL_HEIGHT/2 - 6,
         VIRTUAL_WIDTH,
         'center'
     )
+
+    -- first paddle
+    love.graphics.rectangle('fill', 10, 30, 5, 20)
+
+    -- second paddle
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, 5, 20)
+
+    -- Ball
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2 , VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     -- end rendering ate virtual resolution 
     push:apply('end')
