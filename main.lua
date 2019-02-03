@@ -62,13 +62,22 @@ function love.load()
     player2 = Paddle(VIRTUAL_WIDTH - 20, VIRTUAL_HEIGHT - 30, 5, 20)
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
-
+    servingPlayer = 1
     gameState = 'start'
 
 end
 
 function love.update(dt)
-    if gameState == 'play' then
+    if gameState == 'serve' then
+        -- before switching to play, initialize ball's velocity based
+        -- on player who last scored
+        ball.speed_y = math.random(-50, 50)
+        if servingPlayer == 1 then
+            ball.speed_x = math.random(140, 200)
+        else
+            ball.speed_x = -math.random(140, 200)
+        end
+    elseif gameState == 'play' then
         -- detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position of collision
         if ball:collides(player1) then
@@ -128,6 +137,20 @@ function love.update(dt)
         ball:update(dt)
     end
 
+    if ball.x < 0 then
+        servingPlayer = 1
+        player2_score = player2_score + 1
+        ball:reset()
+        gameState = 'serve'
+    end
+
+    if ball.x > VIRTUAL_WIDTH then
+        servingPlayer = 2
+        player1_score = player1_score + 1
+        ball:reset()
+        gameState = 'serve'
+    end
+
     player1:update(dt)
     player2:update(dt)
 end
@@ -142,9 +165,9 @@ function love.keypressed(key)
         love.event.quit() -- This method will close the game
     elseif key == 'return' or key == 'enter' then
         if gameState == 'start' then
+            gameState = 'serve'
+        elseif gameState == 'serve' then
             gameState = 'play'
-        else
-            gameState = 'start'
             ball:reset()
         end
     end
